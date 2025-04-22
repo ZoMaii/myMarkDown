@@ -58,8 +58,8 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
             // 其他语言建议采用 NGINX 代理流量避免重复写路由
             let Pack =
             {
-                default: 'https://doc.maichc.club/api@runner/' + language + '/authorized_keys/auto_version/' + encodeURIComponent(text),
-                self_Server: 'http://localhost:8088/webapp/markdown/runner/'+encodeURIComponent(text),
+                default: 'https://doc.maichc.club/api@runner/' + language + '/authorized_keys/auto_version/',
+                self_Server: 'http://localhost:8088/webapp/markdown/runner/',
                 // 其他服务器响应地址
             };
 
@@ -69,15 +69,26 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
                 
                 for (const url of urls) {
                 try {
-                    console.log('正在尝试:', url);
-                    
-                    const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ code: text })
-                    });
+                    let applyURL;
+                    if(text.length>=512){
+                        applyURL = url + 'check/'+MD5.hash(text);
+                    }else{
+                        applyURL = url + encodeURIComponent(text);
+                    }
+
+                    console.log('正在尝试:', applyURL);
+                    makePACK={
+                        // 根据服务商的 WEB 服务器配置，这段代码需要自行修改
+                        // 如果程序设计是在 ROUTE(GET地址，确保自动登录/匿名登录正常有效) 响应，POST 接收数据抽样验证并运行(注意GET字符提交限制)，则无需修改
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        // 此部分为兼容性内容，可根据需要配置
+                        body: JSON.stringify({ code: text ,check:MD5.hash(text)})
+                    };
+                    // console.log('请求参数:', makePACK);
+                    const response = await fetch(applyURL, makePACK);
             
                     if (!response.ok) {throw new Error(`HTTP ${response.status}`);};
                     
