@@ -1,8 +1,20 @@
+/**
+ * Markdown 代码运行器
+ * @prerequisite maic_md.css
+ * @workbench General.Private
+ * @description 该脚本为代码块元素(pre>code)添加运行按钮功能，支持多种语言的代码运行。请确保在使用前已加载相关的 CSS 和 JS 文件。
+ * @version 20250423
+ * @date 2025-4-23
+ * @license https://github.com/zomaii/myMarkDown/blob/main/License
+*/
+
+
+
 document.querySelectorAll('.markdown pre').forEach(pre => {
     const languageClass = Array.from(pre.classList).find(className => className.startsWith('language-'));
     const language = languageClass ? languageClass.replace('language-', '') : 'Unknown';
     const code = pre.querySelector('code');
-    let supportLanguage = ['javascript', 'js'];
+    let supportLanguage = /^(javascript|js)$/i;
     let note = 
     {
         'javascript':"//",
@@ -19,20 +31,36 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
         'go':"//",
         'kotlin':"//",
         'typescript':"//",
-    }
+    };
 
     if (!code) {return;} // 如果没有代码块，跳过
 
+    // 创建语言标签元素
+    const languageLabel = document.createElement('span');
+    languageLabel.classList.add('language-label');
+    languageLabel.textContent = language;
+
+    if(!pre.querySelector('.language-label')){
+        pre.appendChild(languageLabel);
+    }
+
     const tip = document.createElement('span');
     tip.textContent = `${note[language]} ${language} 代码未在浏览器中受到支持，将采用云端运行方式`;
-    if(!supportLanguage.includes(language)){
+    if(!supportLanguage.test(language)){
         code.appendChild(tip);
     }
 
     const button = document.createElement('button');
     button.textContent = 'Run';
+    button.title = '运行代码';
     button.classList.add('run-btn');
     pre.appendChild(button);
+
+    if(!pre.querySelector('.copy-btn')){
+        button.style.right = '10px';
+    }
+    
+    
 
     button.addEventListener('click', () => {
         const text = code.textContent || code.innerText;
@@ -40,8 +68,7 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
         // console.log('运行代码:', text);
 
         // 运行代码的逻辑
-        // 正则表达式匹配?[JjSs] / [JjAaVvSsCcRrIiPpTt] ?
-        if (supportLanguage.includes(language)) {
+        if (supportLanguage.test(language)) {
             
             try {
                 // 使用 Function 构造函数来执行 JavaScript 代码

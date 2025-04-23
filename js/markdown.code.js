@@ -1,3 +1,15 @@
+/**
+ * Markdown Code 组件
+ * @prerequisite maic_md.css
+ * @workbench General.Private
+ * @description 该脚本为代码块元素(pre>code)添加语言标签和复制按钮功能。
+ * @version 20250423
+ * @date 2025-4-23
+ * @license https://github.com/zomaii/myMarkDown/blob/main/License
+*/
+
+
+// MaicWorkbench > General.* 意味着此模块脚本代码可以独立运行
 document.querySelectorAll('.markdown pre').forEach(pre => {
     const code = pre.querySelector('code');
     if (!code) {return;} // 如果没有代码块，跳过
@@ -12,11 +24,14 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
     languageLabel.textContent = language;
 
     // 将语言标签添加到代码块左上角
-    pre.appendChild(languageLabel);
+    if (!pre.querySelector('.language-label')) {
+        pre.appendChild(languageLabel);
+    }
 
     // 创建复制按钮
     const button = document.createElement('button');
     button.textContent = 'Copy';
+    button.title = '复制代码';
     button.classList.add('copy-btn');
     pre.appendChild(button);
 
