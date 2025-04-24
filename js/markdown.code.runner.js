@@ -2,9 +2,9 @@
  * Markdown 代码运行器
  * @prerequisite maic_md.css
  * @workbench General.Private
- * @description 该脚本为代码块元素(pre>code)添加运行按钮功能，支持多种语言的代码运行。请确保在使用前已加载相关的 CSS 和 JS 文件。
- * @version 20250423
- * @date 2025-4-23
+ * @description 该脚本为代码块元素(pre>code)添加运行按钮功能，支持多种语言的代码运行。请确保在使用前已加载相关的 CSS 和 JS 文件。预增函数：callPannel(text)，用于展示运行结果。
+ * @version 20250424
+ * @date 2025-4-24
  * @license https://github.com/zomaii/myMarkDown/blob/main/License
 */
 
@@ -123,13 +123,21 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
                     if (data.error) {throw new Error(data.error);};
             
                     console.log('运行成功:', data.result);
-                    alert('运行结果:\n' + data.result);
+                    if (callPannel) {
+                        // 如果需要使用 callPannel 函数来展示结果
+                        callPannel(data.result);
+                    }else{
+                        alert('运行结果:\n' + data.result);
+                    }
                     return; // 成功则终止
             
                 } catch (error) {
                     console.warn(`请求失败 [${url}]:`, error.message);
+                    if(callPannel){
+                        callPannel('请求失败 ['+url+']:\n' + error.message);
+                    }
                 }
-                }
+            }
                 
                 console.error('所有服务器均不可用');
             };
