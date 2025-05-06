@@ -15,6 +15,9 @@
         <span>中国库布其沙漠的治理奇迹，印证了科技与自然共生的可能。通过"光伏治沙"模式，300万亩流动沙丘被固定，光伏板下的农作物产量提升30%，形成"板上发电、板间种植、板下修复"的立体生态系统。这种创新模式让荒漠每年固碳1540万吨，相当于再造1.5个神农架森林公园。</span>
         <span>日本上胜町的"零废弃小镇"实践，展现了社区参与的强大力量。居民将垃圾细分为45类，通过微生物分解技术使80%废弃物回归自然循环。这种精细化管理系统，让小镇每年减少焚烧垃圾3400吨，节约处理费用60万美元，更培育出全新的环保产业链。</span>
         <span>生态文明的曙光正在地平线升起。从挪威海底数据中心利用海水降温的巧思，到新加坡垂直森林建筑对生物多样性的重建，人类正在用智慧搭建与自然对话的桥梁。这不仅是技术革新，更是文明认知的迭代——当我们学会用生态思维重塑发展逻辑，绿色未来终将在人类与自然的和弦中绽放。</span>
+        <code>import requests</code>
+        <mark>hello world</mark>
+        <kbd>点击登录</kbd>
         <blockquote data-type="tip" data-label="tip">
             <p>你可以通过 Ctrl + Shift + V 预览 Markdown！</p>
         </blockquote>
@@ -75,17 +78,55 @@
 </code>
 </pre>
 
-<pre>hello world \t 这是一段纯文本，用于展示 pre 的 基础样式<></pre>
-        <code>import requests</code>
-        <mark>hello world</mark>
-        <kbd>点击登录</kbd>
+        <pre>hello world \t 这是一段纯文本，用于展示 pre 的 基础样式<></pre>
+        <h1>下面我将展示一些 myMarkDown 的其他支持内容，而非常见的支持内容</h1>
+
+        <span>工作主要依赖于 maic_md.css 的渲染！</span>
+        <blockquote>
+            <b>md-maic(VSCode)</b> 是被 <i><b>默认集成</b></i> 在这个工作流了当中，<mark>如果有其他集成协作需求</mark>，可根据此示例文件自行修订方言支持等！
+            （下面参考区域已被 md-maic 特殊保留，如果处理正常得当，应该看见: &lt;mark&gt;是否显示这个标记为准&lt;/mark&gt;）
+            <pre>pre标签的绘制已被更改为主要依赖于 CSS ,因此需要自行转义！以<mark>是否显示这个标记为准</mark></pre>
+            我们对于 maic_md.css 的渲染是否支持 <i>Taildwind CSS</i> 的态度为否定，<mark>如果需要使用 Taildwind CSS 的样式</mark>，请参考 <a href="https://tailwindcss.com/docs/installation/using-vite" target="_blank">Taildwind CSS 的官方文档</a> 进行单独使用。
+        </blockquote>
+
+        <h2>第一部分： <code>&lt;element title="xxx"&gt;</code> 中的 title 注释介绍支持</h2>
+        <span>
+            这是关于如何在 markdown 中使用 title 元素的例子，它通常用于绘制 wiki 或者编写文章。例如我在这里提到的
+             <font title="😄 通过下面的链接打开谷歌，搜索有关于我在 github 上的信息 \n @https://www.google.com/search?q=site:github.com+inurl:zomaii \n "><i>Google</i></font> 
+             就是一个绘制的例子，你可以通过点击它 获取/关闭 更多隐藏在 title 当中的信息。
+             实现它的原理是先解析 title内容绘制 div 元素，然后在页面中移除了 title 元素的默认样式，
+        </span>
+        <span>如果需要查看不同，注释掉本
+            <font title='&lt;script src="./js/element/attribute.title.js"&gt;&lt;/script&gt;'><i>脚本文件</i></font> 即可。
+            值得注意的是：为了动画视觉效果和设备兼容性，<code>myMarkDown/attribute/title.js</code> 会提前在它的下方渲染上述文档中已有 title 属性元素的内容介绍板的样式为 <mark>display:block;</mark> 而非 <mark>display:none;</mark> 。
+            同时，它作为一个附加的小模块，我并不打算让它支持更多复杂的显示，只推荐使用如 <mark>@https://localhost</mark> 这种简单的链接形式去预览您的复杂展示需求！后续可能会加入图片预览功能。
+        </span>
+
+        <h2>第二部分： pre.view-* 显示功能支持</h2>
+        <span>可以正常将 CSV 文件解析为 表格形式，但 CSV 的排序、查找、编辑问题未制作，code.runner.js 的 run 逻辑有待重新设计</span>
+<pre class="language-csv">
+<code>
+<span>name,age,sex</span>
+<span>张三,18,男</span>
+<span>李四,20,女</span>
+<span>王五,22,男</span>
+<span>赵六,25,女</span>
+<span>钱七,30,男</span>
+<span>孙八,35,女</span>
+<span>周九,40,男</span>
+<span>吴十,45,女</span>
+</code>
+</pre>
 
 
         <!-- 查看各个文件的 javascript doc 以确定组件依赖进行顺序安排 -->
+        <script exec="cr" src="./maicqcr/md5.js"></script>
         <script src="./js/markdown.js"></script>
+        <script src="./js/attribute/title.js"></script>
         <script src="./js/markdown.code.color.js"></script>
         <script src="./js/markdown.code.js"></script>
         <script src="./js/markdown.code.runner.js"></script>
-        
+        <script src="./js/markdown.code.view.js"></script>
+
     </body>
 </html>

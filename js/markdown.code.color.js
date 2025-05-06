@@ -23,13 +23,13 @@ if (typeof my_markdown === 'object') {
     {
         RegExp:
         {
-            string: /".*"|'.*'/g,                          // 字符串
-            set: /\b=\b|==|>=|<=|!=/g,                     // 赋值运算符
-            function: /\S+\(.*\)/g,                        // 函数定义
-            parme: /\(.*\)/g,                              // 函数参数
-            number: /\b\d+(\.\d+)?\b/g,                    // 数字
-            notes: /\/\/.*|\/\*[\s\S]*?\*\//g,             // 注释
-            boolean: /\b(true|True|false|False)\b/g,       // 布尔值
+            string: /".*"|'.*'/g,                                   // 字符串
+            set: /\b=\b|==|===|>=|<=|!=/g,    // 赋值运算符
+            function: /\S+\(.*\)/g,                                 // 函数定义
+            parme: /\(.*\)/g,                                       // 函数参数
+            number: /\b\d+(\.\d+)?\b/g,                             // 数字
+            notes: /\/\/.*|\/\*[\s\S]*?\*\//g,                      // 注释
+            boolean: /\b(true|True|false|False)\b/g,                // 布尔值
         },
         colors:
         {

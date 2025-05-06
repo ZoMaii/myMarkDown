@@ -11,12 +11,12 @@
 
 
 // myMarkDown > markdown.js 推荐的最佳实践如下：
-// 1. 网页展示情况下 element.markdown 推荐写法是 div.markdown，而非 body.markdown。
-// 2. CSS 选择器应该对 element.markdown 的子元素进行 all:initial 处理，避免影响其他元素。
-// 3. JavaScript Doc 的 workbench 标识在非 General.* 情况下不推荐引用此文件，避免与其他组件冲突。
-// 4. 遵循最基础的数据清洗要求，应当处理单纯的数据，避免直接在复杂环境下运行。
-// 5. 如果 GUI 部分出现问题，请尝试将该文件放在最后执行，部分开发者不会采用 monitorDOMChanges 处理动态变化问题，同时也不会考虑业务工作队列问题。
-// 6. 建议将此文件的引入放在 HTML 的底部，确保 DOM 元素已经加载完成。同时放到 myMarkDown 的起始部分，确保组件顺序加载无误。
+// 1. markdown.js 文件放于 body 元素的最底部，在 myMarkdown 的项目中的引用处于第一位。
+// 2. [object] my_markdown 和 [class] myMarkDown 不得占用。
+// 3. 如果 GUI 部分出现问题，请尝试将对应的文件放在最后执行，部分开发者不会采用 monitorDOMChanges 处理动态变化问题，同时也不会考虑业务工作队列问题。
+// 4. JavaScript Doc 的 workbench 标识在非 General.* 情况下不推荐引用此文件，避免与其他组件冲突。
+// 5. 网页展示情况下 element.markdown 推荐写法是 div.markdown，而非 body.markdown。
+// 6. CSS 选择器应该对 element.markdown 的子元素进行 all:initial 处理，避免影响其他元素。
 
 
 
@@ -76,6 +76,7 @@ function xpath(xpath, context) {
  * @description 该函数使用 MutationObserver 监控指定 DOM 元素的变化，并在变化发生时调用回调函数。
  * @param {Element} targetNode - 要监控的 DOM 元素，可通过传空值或 null 来停止监控。
  * @param {Function} callback - 当 DOM 发生变化时的回调函数，推荐写法：(mutation) => {}
+ * @return {Function} 停止监控的函数。
  */
 function monitorDOMChanges(targetNode, callback) {
     if (!(targetNode instanceof Element)) {
@@ -102,4 +103,104 @@ function monitorDOMChanges(targetNode, callback) {
 
     // 返回一个停止监控的函数
     return () => observer.disconnect();
+}
+
+
+
+/**
+ * Markdown 查询代理
+ * @description 该类为编写的非独立 (General.*) 的 private 函数功能提供检查与注册服务
+ * 
+ * @tip 寻址范围：window。
+ * 
+ * @param {String} name - 填写 字符串 类型，用于查询此键是否正常以及它的类型。
+ */
+class myMarkDown {
+    constructor(RMC) {
+        this.query = RMC;
+        this.queryReport = {
+            defined: false,
+            type: null,
+            message: "",
+        };
+
+        // 初始化运行逻辑
+        this.__init__();
+    }
+
+    __init__() {
+        switch (typeof this.query) {
+            case 'string':
+                this.queryReport.fomat = this.query.replaceAll(' ', '');
+                const report = this.__report_Object_(this.queryReport.fomat);
+                this.queryReport.defined = report[0];
+                this.queryReport.type = report[1];
+                this.queryReport.message = report[2];
+                break;
+
+            default:
+                this.queryReport.message = "myMarkDown: 未知的查询。";
+                this.queryReport.type = "error";
+                this.queryReport.defined = false;
+                break;
+        }
+    }
+
+    /**
+     * 检查对象是否存在并返回其类型
+     * @param {String} who - 要检查的对象名称
+     * @return {Array} 返回一个数组，第一个元素为布尔值，表示对象是否存在；第二个元素为对象的类型或错误信息
+     */
+    __report_Object_(who) {
+        try {
+            const obj = this.__getGlobalObject(who);
+            if (obj !== undefined) {
+                return [true, typeof obj];
+            } else {
+                return [false, "undefined"];
+            }
+        } catch (error) {
+            return [false, "error","留意提交查询的 query 键定义是否为 class 这种存在作用域的函数问题，或是开发者未向 my_markdown 中提交自己的 class"];
+        }
+    }
+
+    /**
+     * 获取全局对象的属性
+     * @param {String} path - 对象的路径，例如 "window.document"
+     * @return {any} 返回对象或 undefined
+     */
+    __getGlobalObject(path) {
+        return path.split('.').reduce((acc, part) => {
+            if (acc && acc[part] !== undefined) {
+                return acc[part];
+            }
+            throw new Error(`对象路径无效: ${path}`);
+        }, globalThis);
+    }
+}
+
+/**
+ * 处理视口变化
+ * @description 该函数用于处理视口变化事件，并在变化时调用指定的回调函数。
+ * @param {Function} callback - 视口变化时调用的回调函数。
+*/
+function handleViewportChange(callback) {
+    let timeoutId;
+
+    const updatePositionSafely = () => {
+        clearTimeout(timeoutId);
+        // 延迟 150ms 再触发，等待 layout 稳定
+        timeoutId = setTimeout(() => {
+            callback();
+        }, 150);
+    };
+
+    if ('visualViewport' in window) {
+        window.visualViewport.addEventListener('resize', updatePositionSafely);
+        window.visualViewport.addEventListener('scroll', updatePositionSafely);
+    } else {
+        // 老旧兼容
+        window.addEventListener('resize', updatePositionSafely);
+        window.addEventListener('scroll', updatePositionSafely);
+    }
 }

@@ -16,7 +16,7 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
 
     // 获取语言类型（例如 'language-javascript'）
     const languageClass = Array.from(pre.classList).find(className => className.startsWith('language-'));
-    const language = languageClass ? languageClass.replace('language-', '') : ' ';
+    const language = languageClass ? languageClass.replace('language-', '') : 'Unknown';
 
     // 创建语言标签元素
     const languageLabel = document.createElement('span');

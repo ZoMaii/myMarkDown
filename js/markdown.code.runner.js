@@ -3,8 +3,8 @@
  * @prerequisite maic_md.css
  * @workbench General.Private
  * @description 该脚本为代码块元素(pre>code)添加运行按钮功能，支持多种语言的代码运行。请确保在使用前已加载相关的 CSS 和 JS 文件。预增函数：callPannel(text)，用于展示运行结果。
- * @version 20250424
- * @date 2025-4-24
+ * @version 20250506
+ * @date 2025-5-26
  * @license https://github.com/zomaii/myMarkDown/blob/main/License
 */
 
@@ -15,6 +15,7 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
     const language = languageClass ? languageClass.replace('language-', '') : 'Unknown';
     const code = pre.querySelector('code');
     let supportLanguage = /^(javascript|js)$/i;
+    let dataLang = /^(csv|json|txt|sql)$/i;
     let note = 
     {
         'javascript':"//",
@@ -46,7 +47,7 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
 
     const tip = document.createElement('span');
     tip.textContent = `${note[language]} ${language} 代码未在浏览器中受到支持，将采用云端运行方式`;
-    if(!supportLanguage.test(language)){
+    if(!supportLanguage.test(language) && !dataLang.test(language) && language !== 'Unknown'){
         code.appendChild(tip);
     }
 
@@ -64,6 +65,7 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
 
     button.addEventListener('click', () => {
         const text = code.textContent || code.innerText;
+        const codeLines = code.querySelectorAll('span').length; 
         
         // console.log('运行代码:', text);
 
@@ -78,6 +80,69 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
                 console.error('运行失败:', error);
             }
 
+        }else if(dataLang.test(language)){
+                
+                // 处理数据语言的逻辑
+                // 这里可以根据需要进行处理，例如解析 CSV、JSON 等格式
+                let result;
+                try {
+                    if (language === 'csv') {
+                        // 解析 CSV 数据
+                        const rows = code.querySelectorAll('span');
+                        const csvData = Array.from(rows).map(row => row.innerText.split(','));
+                        table = document.createElement('table');
+                        Object.assign(table.style, {
+                            width: '50%',
+                            borderCollapse: 'collapse',
+                            border: '1px solid #ddd',
+                            marginTop: '10px',
+                            marginBottom: '10px',
+                            backgroundColor: '#fff',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                            color: '#333',
+                            lineHeight: '1.5',
+                            fontFamily: 'Arial, sans-serif',
+                            fontSize: '14px',
+                        });
+                        table.appendChild(document.createElement('thead'));
+                        table.appendChild(document.createElement('tbody'));
+                        const thead = table.querySelector('thead');
+                        const tbody = table.querySelector('tbody');
+                        csvData.forEach((row, index) => {
+                            const tr = document.createElement('tr');
+                            row.forEach(cell => {
+                                const td = document.createElement(index === 0 ? 'th' : 'td');
+                                td.textContent = cell;
+                                Object.assign(td.style, {
+                                    padding: '8px',
+                                    textAlign: 'left',
+                                    border: '1px solid #ddd',
+                                    backgroundColor: index === 0 ? '#f4f4f4' : '#fff',
+                                    fontWeight: index === 0 ? 'bold' : 'normal',
+                                });
+                                tr.appendChild(td);
+                            });
+                            if (index === 0) {
+                                thead.appendChild(tr);
+                            } else {
+                                tbody.appendChild(tr);
+                            }
+                        });
+                        result = table.outerHTML;
+                    }else{
+                        result = 无对应的数据处理方式;
+                    }
+
+                    if (callPannel) {
+                        callPannel(pre,true,result);
+                    }else{
+                        alert('运行结果:\n' + result);
+                    }
+                } catch (error) {
+                    console.error('运行失败:', error);
+                }
         } else {
 
             // MaicQCR 启用 SOCKET(根据是否需要BT、BLE、NFC、LAN连接而选用COM) 和 iStream 的 Webapp/markdown/runner 就可以直接使用，无需配置自托管服务器内容。
@@ -125,7 +190,7 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
                     console.log('运行成功:', data.result);
                     if (callPannel) {
                         // 如果需要使用 callPannel 函数来展示结果
-                        callPannel(data.result);
+                        callPannel(pre,false,data.result);
                     }else{
                         alert('运行结果:\n' + data.result);
                     }
@@ -134,7 +199,7 @@ document.querySelectorAll('.markdown pre').forEach(pre => {
                 } catch (error) {
                     console.warn(`请求失败 [${url}]:`, error.message);
                     if(callPannel){
-                        callPannel('请求失败 ['+url+']:\n' + error.message);
+                        callPannel(pre,false,'请求失败 ['+url+']:\n' + error.message);
                     }
                 }
             }

@@ -1,6 +1,10 @@
 Example file: Markdown.html<br>
 License file: License
 
+myMarkDown namespcae:
+- [Object] my_markdown
+- [class] myMarkDown
+
 ---
 
 NO SUPPORT FOUNCTION:
