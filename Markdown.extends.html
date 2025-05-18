@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Markdown extends Example</title>
+        <link rel="stylesheet" href="https://doc.maichc.club/!css/maic_main.css">
+        <link rel="stylesheet" href="https://doc.maichc.club/!css/maic_md.css">
+    </head>
+
+    <body class="markdown zh">
+        <h1>
+            此文件将展示一个适用于 wiki,blog 的 Markdown 文件
+        </h1>
+        <span>
+            这是关于如何在 markdown 中使用 title 元素的例子，它通常用于绘制 wiki 或者编写文章。例如我在这里提到的
+             <font title="😄 通过下面的链接打开谷歌，搜索有关于我在 github 上的信息 \n @https://www.google.com/search?q=site:github.com+inurl:zomaii \n "><i>Google</i></font> 
+             就是一个绘制的例子，你可以通过点击它 获取/关闭 更多隐藏在 title 当中的信息。
+             实现它的原理是先解析 title内容绘制 div 元素，然后在页面中移除了 title 元素的默认样式，
+        </span>
+        <span>如果需要查看不同，注释掉本
+            <font title='&lt;script src="./element/attribute.title.js"&gt;&lt;/script&gt;'><i>脚本文件</i></font> 即可。
+            值得注意的是：为了动画视觉效果和设备兼容性，<code>myMarkDown/attribute/title.js</code> 会提前在它的下方渲染上述文档中已有 title 属性元素的内容介绍板的样式为 <mark>display:block;</mark> 而非 <mark>display:none;</mark> 。
+            同时，它作为一个附加的小模块，我并不打算让它支持更多复杂的显示，只推荐使用如 <mark>@https://localhost</mark> 这种简单的链接形式去预览您的复杂展示需求！后续可能会加入图片预览功能。
+        </span>
+
+        <img title="wikipedia 的标志图片" src="https://en.wikipedia.org/static/images/icons/wikipedia.png" alt="wikipedia"/>
+
+        <script src="./js/markdown.js"></script>
+        <script src="./js/extends/attr.title.js"></script>
+    </body>
+</html>

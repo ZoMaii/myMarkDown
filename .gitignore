@@ -1,6 +1,10 @@
 *.qcr
+*.qis
 *.cfg
 *.ini
+*tmp.qcr*
 
 *maicqcr
 *iStream
+*bak
+*venv

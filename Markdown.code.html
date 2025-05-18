@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Markdown Code Example</title>
+        <link rel="stylesheet" href="./maicqcr/maic_main.css">
+        <link rel="stylesheet" href="./maicqcr/maic_md.css">
+    </head>
+
+    <body class="markdown">
+    <h1>
+        此文件将展示一个适用于 程序员 的 Markdown 文件
+    </h1>
+    <span>注意：留意 Maic-workbench 的 <font color="red">环境鉴权等级</font> 和 myMarkDown_code 的提交方式，避免未按预期的运行情况出现！</span>
+    <span>如果 <mark>辅助性的 <i>独立功能</i></mark> 需要引入，留意它本身是否会对 <b>DOM 树结构</b> 形成修改！</span>
+
+    <p>在 myMarkDown 的项目设计当中，目前有且仅有 <code>markdown.code.view.js</code> 属于这种特殊的辅助性功能，它并不能像 code.color、code.lang、code.runner 那样被归类为 <b>独立性组件</b>！ code.view 只是 <b>独立性功能</b>。采用 push 的方式提交。</p>
+
+<pre class="language-python">
+<code>
+<span>def hello_world(bool=False,index=0):</span>
+<span>    print("Hello, World!")</span>
+<span></span>
+<span>if __name__ == '__main__':</span>
+<span>    hello_world(True)</span>
+<span></span>
+</code>
+</pre>
+
+<pre class="language-c">
+<code>
+<span>#include &lt;stdio.h&gt;</span>
+<span></span>
+<span>void main()</span>
+<span>{</span>
+<span>  printf("hello world!");</span>
+<span>}</span>
+</code>
+</pre>
+
+<pre class="language-javascript">
+<code>
+<span>//JavaScript 可以直接在浏览器中运行！</span>
+<span>function helloWorld()</span>
+<span>{</span>
+<span>  alert("Hello, World!");</span>
+<span>}</span>
+<span></span>
+<span>helloWorld();</span>
+</code>
+</pre>
+
+<pre class="language-csv">
+<code>
+<span>name,age,sex</span>
+<span>张三,18,男</span>
+<span>李四,20,女</span>
+<span>王五,22,男</span>
+<span>赵六,25,女</span>
+<span>钱七,30,男</span>
+<span>孙八,35,女</span>
+<span>周九,40,男</span>
+<span>吴十,45,女</span>
+</code>
+</pre>
+
+        <script exec="cr" src="./maicqcr/md5.js"></script>
+        <script src="./js/markdown.js"></script>
+        <script src="./js/markdown.code.js"></script>
+
+        <!--
+        独立性组件具备对全局的修改能力，独立性功能只能对局部修改。独立性组件在系列基础化导入后，可随意决定导入位置。 
+        code.view 特殊功能与 runner 组件存在 DOM 树上的顺序关系，所以需要特别注意顺序！
+         
+         -->
+        <script src="./js/code/markdown.code.lang.js"></script>
+        <script src="./js/code/markdown.code.color.js"></script>
+        <script src="./js/code/markdown.code.view.js"></script>
+        <script src="./js/code/markdown.code.runner.js"></script>
+        <script src="./js/code/markdown.code.copy.js"></script>
+        
+
+        
+
+    </body>
+</html>

@@ -3,8 +3,8 @@
  * @prerequisite maic_md.css
  * @workbench General
  * @description 该脚本属于格式化的 Markdown 组件，为前端可视化提供支撑，在文档加载完成后执行。
- * @version 20250423
- * @date 2025-4-23
+ * @version 20250518
+ * @date 2025-5-18
  * @license https://github.com/zomaii/myMarkDown/blob/main/License
 */
 
@@ -21,7 +21,15 @@
 
 
 // 全局对象注册，如果有 module，则注册为模块
-var my_markdown = {};
+var my_markdown = 
+{
+    workbench:
+    {
+        Public:{},
+        General:{},
+        Private:{},
+    },
+};
 
 
 
@@ -108,6 +116,34 @@ function monitorDOMChanges(targetNode, callback) {
 
 
 /**
+ * 处理视口变化
+ * @description 该函数用于处理视口变化事件，并在变化时调用指定的回调函数。
+ * @param {Function} callback - 视口变化时调用的回调函数。
+*/
+function handleViewportChange(callback) {
+    let timeoutId;
+
+    const updatePositionSafely = () => {
+        clearTimeout(timeoutId);
+        // 延迟 150ms 再触发，等待 layout 稳定
+        timeoutId = setTimeout(() => {
+            callback();
+        }, 150);
+    };
+
+    if ('visualViewport' in window) {
+        window.visualViewport.addEventListener('resize', updatePositionSafely);
+        window.visualViewport.addEventListener('scroll', updatePositionSafely);
+    } else {
+        // 老旧兼容
+        window.addEventListener('resize', updatePositionSafely);
+        window.addEventListener('scroll', updatePositionSafely);
+    }
+}
+
+
+
+/**
  * Markdown 查询代理
  * @description 该类为编写的非独立 (General.*) 的 private 函数功能提供检查与注册服务
  * 
@@ -176,31 +212,5 @@ class myMarkDown {
             }
             throw new Error(`对象路径无效: ${path}`);
         }, globalThis);
-    }
-}
-
-/**
- * 处理视口变化
- * @description 该函数用于处理视口变化事件，并在变化时调用指定的回调函数。
- * @param {Function} callback - 视口变化时调用的回调函数。
-*/
-function handleViewportChange(callback) {
-    let timeoutId;
-
-    const updatePositionSafely = () => {
-        clearTimeout(timeoutId);
-        // 延迟 150ms 再触发，等待 layout 稳定
-        timeoutId = setTimeout(() => {
-            callback();
-        }, 150);
-    };
-
-    if ('visualViewport' in window) {
-        window.visualViewport.addEventListener('resize', updatePositionSafely);
-        window.visualViewport.addEventListener('scroll', updatePositionSafely);
-    } else {
-        // 老旧兼容
-        window.addEventListener('resize', updatePositionSafely);
-        window.addEventListener('scroll', updatePositionSafely);
     }
 }
