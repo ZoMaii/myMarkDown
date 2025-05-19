@@ -107,7 +107,7 @@ class extends_attr_title {
                         card.style.transform = 'scale(1)';
                         card.style.pointerEvents = 'auto';
                         this.positionCard(item,card,isVisible);
-                    }, 1000);
+                    }, 618);
                 });
                 item.addEventListener('mouseleave', () => {
                     clearTimeout(hoverTimer);

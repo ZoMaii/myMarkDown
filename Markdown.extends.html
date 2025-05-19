@@ -26,7 +26,135 @@
 
         <img title="wikipedia 的标志图片" src="https://en.wikipedia.org/static/images/icons/wikipedia.png" alt="wikipedia"/>
 
+
+
+        <h2>轻量化搜索</h2>
+        <span>在这里我将展示一个轻量化的搜索功能，它可以在 markdown 中使用，当然你也可以使用它来做一些简单的搜索功能。（联合搜索暂不支持...）</span>
+        <span>此功能的原始编写者是：大笨蛋，来源网址是：https://www.jq22.com/jquery-info22856</span>
+        <span>在 myMarkDown 项目中，我仅对此进行了 JQuery 到 ES6 的转义，并稍微进行了一些优化</span><br>
+
+         <div class="content1">
+            <!-- <input type="text" id="lin" placeholder="请输入需要搜索的内容"> -->
+            <input type="text" id="lin" placeholder="请输入需要搜索的内容">
+            <select id="select">
+            <option>请选择地址</option>
+            <option>富顺</option>
+            <option>南充</option>
+            <option>广元</option>
+            <option>江安</option>
+            <option>成都</option>
+            <option>内江</option>
+            </select>
+
+            <table id="table-1">
+            <thead>
+                <tr>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>电话</th>
+                <th>地址</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                <td>林兵</td>
+                <td>男</td>
+                <td>18</td>
+                <td>12345678941</td>
+                <td>富顺</td>
+                </tr>
+                <tr>
+                <td>赖玉英</td>
+                <td>女</td>
+                <td>18</td>
+                <td>12345678942</td>
+                <td>南充</td>
+                </tr>
+                <tr>
+                <td>潘旭</td>
+                <td>女</td>
+                <td>20</td>
+                <td>12345678912</td>
+                <td>富顺</td>
+                </tr>
+                <tr>
+                <td>王威平</td>
+                <td>男</td>
+                <td>20</td>
+                <td>97543152146</td>
+                <td>广元</td>
+                </tr>
+                <tr>
+                <td>李丹</td>
+                <td>女</td>
+                <td>30<input type="checkbox"></td>
+                <td>14725836910</td>
+                <td>江安</td>
+                </tr>
+                <tr>
+                <td>陈志樑</td>
+                <td>男<input type="checkbox"></td>
+                <td>20</td>
+                <td>31546287451</td>
+                <td>富顺</td>
+                </tr>
+                <tr>
+                <td>郭仕宏<input type="checkbox"></td>
+                <td>男</td>
+                <td>20</td>
+                <td>51240316845</td>
+                <td>南充</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
+        <div class="content2">
+            <input type="text" id="searchInput" placeholder="请输入需要搜索的内容">
+
+            <ul id="searchList">
+            <li>死亡如风，常伴吾身。<input type="checkbox"></li>
+            <li>蠢货是无药可治的！</li>
+            <li>想杀我？你可以试试。</li>
+            <li>死亡而已，没什么大不了的。</li>
+            <li>速战速决！</li>
+            <li>还是别出招了，反正是我赢。</li>
+            <li>想独自平静一会吗？很快你就可以了。</li>
+            <li>有些事绝对不会无趣。</li>
+            <li>有些失误无法犯两次。 我不会怀着耻辱而死！</li>
+            <li> 别再逃了。 我命由我，不由天。 一剑，一念。 还没到死的时候。</li>
+            <li>长路漫漫 惟剑做伴 吾之荣耀 离别已久 宁日安在 无人能云 且随疾风前行 身后一许流星 此剑之势 愈斩愈烈 仁义道德</li>
+            </ul>
+        </div>
+
+
         <script src="./js/markdown.js"></script>
         <script src="./js/extends/attr.title.js"></script>
+        
+        <script src="./js/extends/app.table.search.js"></script>
+        <script>
+            // app.table.search.js 初始化
+            // 表1
+            document.getElementById('lin').addEventListener('keyup', function() {
+            const table1 = document.getElementById('table-1');
+            new Search(table1, this);
+            });
+
+            // 表2
+            document.getElementById('select').addEventListener('change', function() {
+            const content = document.getElementById('select');
+            const table2 = document.getElementById('table-1');
+            new Search(table2, content, '#6332f6');
+            });
+
+            // 搜索ul li
+            document.getElementById('searchInput').addEventListener('keyup', function() {
+                const content = document.getElementById('searchList');
+                new Search(content, this, '#6332f6');
+            });
+        </script>
     </body>
 </html>
