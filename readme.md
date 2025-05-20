@@ -21,6 +21,15 @@ You can integrate it into any environment that supports ES6, provided that you p
 >- [Object] my_markdown
 >- [class] myMarkDown
 
+>[!WARNING]
+> This feature is built for the client and is geared towards the consumer. **Do not** try to write **any server-side** functionality on the client side, move it to the worker!
+> 
+> If you are using/importing this project for the first time, ***verify*** that **the commit** matches the github information via Git
+
+
+
+I recommend that each worker *tweak* the **example file** to suit their own editor and finally package the script list (tail of body) to apply it
+
 
 
 # NO SUPPORT FUNCTIONS

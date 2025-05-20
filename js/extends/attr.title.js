@@ -13,6 +13,17 @@ class extends_attr_title {
         if (element.hasAttribute("target")) item.target = element.getAttribute("target");
         if (element.hasAttribute("src")) item.src = element.getAttribute("src");
         if (element.hasAttribute("alt")) item.alt = element.getAttribute("alt");
+        if (element.hasAttribute("onclick")) item.onclick = element.getAttribute("onclick");
+
+        // 保留原本的事件监听器，__#markdown.test.js 的测试功能，建议个人使用时导入而非直接对外暴露
+        const events = element.__events__;
+        if (events) {
+            for (const [type, listeners] of Object.entries(events)) {
+                listeners.forEach(listener => {
+                    item.addEventListener(type, listener, listener.options || false);
+                });
+            }
+        }
 
         return item;
     }
